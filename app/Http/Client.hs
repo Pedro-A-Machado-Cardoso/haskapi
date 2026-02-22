@@ -1,13 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE QuasiQuotes #-}
-
 module Http.Client (requestElement, requestText, ApiRequest(..)) where
     import Network.HTTP.Req
-    import Data.Aeson (Value, FromJSON, withObject, (.:))
+    import Data.Aeson ( Value, FromJSON, withObject, (.:), encode )
     import Data.Aeson.Key (fromText)
     import Data.Aeson.Types (Parser, parseEither)
     import Data.Text (Text, unpack)
-    import Data.Aeson (encode)
     import Data.Text.Lazy (toStrict)
     import Data.Text.Lazy.Encoding (decodeUtf8)
 
@@ -15,27 +11,6 @@ module Http.Client (requestElement, requestText, ApiRequest(..)) where
         | PostRequest Value
         | PutRequest Value
         | DeleteRequest
-
-    -- requestNoBody
-    --     :: Url scheme
-    --     -> Option scheme
-    --     -> Req Value
-    -- requestNoBody url opts = do
-    --     response <- req GET url NoReqBody jsonResponse opts
-
-    --     pure (responseBody response)
-
-    -- requestWithBody
-    --     :: HttpMethod method
-    --     => method
-    --     -> Url scheme
-    --     -> Option scheme
-    --     -> Value
-    --     -> Req Value
-    -- requestWithBody method url opts body = do
-
-    --     response <- req method url (ReqBodyJson body) jsonResponse opts
-    --     pure (responseBody response)
 
     requestJSON
         :: FromJSON a
@@ -76,9 +51,9 @@ module Http.Client (requestElement, requestText, ApiRequest(..)) where
         pure (parseEither (getElement key label) v)
 
     getElement :: FromJSON a => Text -> Text -> Value -> Parser a
-    getElement key label v = withObject (unpack label) (\f -> f .: fromText key) v
+    getElement key label = withObject (unpack label) (\f -> f .: fromText key)
 
     valueToText :: Value -> Text
     valueToText = toStrict . decodeUtf8 . encode
-        
+
 
