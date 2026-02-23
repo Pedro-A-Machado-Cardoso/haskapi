@@ -21,7 +21,6 @@ module API.PlayerDB (runPlayerDB) where
             "mc"        -> Just Minecraft
             "hytale"    -> Just Hytale
             "steam"     -> Just Steam
-            "gabenland" -> Just Steam -- :)
             "xbox"      -> Just Xbox
             _           -> Nothing
 
@@ -33,7 +32,7 @@ module API.PlayerDB (runPlayerDB) where
             "id"        -> Just Id
             "avatar"    -> Just Avatar
             "meta"      -> Just Meta
-            "facebook"  -> Just Meta
+            "facebook"  -> Just Meta -- :)
             _           -> Nothing
 
     headers :: Text -> Option scheme
