@@ -1,16 +1,29 @@
-module Http.Client (requestElement, requestText, ApiRequest(..)) where
+module Http.Client (requestElement, requestText, ApiRequest(..), requestJSON, getElement, findByKey) where
     import Network.HTTP.Req
-    import Data.Aeson ( Value, FromJSON, withObject, (.:), encode )
+    import Data.Aeson ( Value, FromJSON, withObject, (.:), encode, Value(..) )
     import Data.Aeson.Key (fromText)
-    import Data.Aeson.Types (Parser, parseEither)
+    import Data.Aeson.Types (Parser, parseEither )
     import Data.Text (Text, unpack)
-    import Data.Text.Lazy (toStrict)
     import Data.Text.Lazy.Encoding (decodeUtf8)
+    import qualified Data.Aeson.KeyMap as KM
+    import qualified Data.Aeson.Key    as K
+    import qualified Data.Vector as V
+    import Data.Text.Lazy (toStrict)
 
     data ApiRequest = GetRequest
         | PostRequest Value
         | PutRequest Value
         | DeleteRequest
+
+    -- Find ALL values matching a key anywhere in the JSON tree
+    findByKey :: Text -> Value -> [Value]
+    findByKey key val = case val of
+        Object obj ->
+            let found  = maybe [] pure $ KM.lookup (K.fromText key) obj
+                deeper = concatMap (findByKey key) (KM.elems obj)
+            in found ++ deeper
+        Array arr -> concatMap (findByKey key) (V.toList arr)
+        _         -> []
 
     requestJSON
         :: FromJSON a

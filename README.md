@@ -8,3 +8,4 @@ A Haskell API handler and caller.
 # Supported API
 
 - [Chuck Norris Joke API](https://api.chucknorris.io/)
+- [PlayerDB](https://playerdb.co/)
