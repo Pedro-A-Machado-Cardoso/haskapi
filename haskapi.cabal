@@ -66,6 +66,7 @@ executable haskapi
         Http.Client,
         API.Chuck,
         API.PlayerDB,
+        API.Custom,
         API.Registry
 
     -- LANGUAGE extensions used by modules in this package.
@@ -81,7 +82,8 @@ executable haskapi
         yaml,
         text,
         bytestring,
-        http-types
+        http-types,
+        split
     -- Directories containing source files.
     hs-source-dirs:   app
 

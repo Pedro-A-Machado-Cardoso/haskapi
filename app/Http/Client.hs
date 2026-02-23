@@ -1,4 +1,4 @@
-module Http.Client (requestElement, requestText, ApiRequest(..), requestJSON, getElement, findByKey) where
+module Http.Client (requestElement, requestText, ApiRequest(..), requestJSON, getElement, findByKey, valueToText) where
     import Network.HTTP.Req
     import Data.Aeson ( Value, FromJSON, withObject, (.:), encode, Value(..) )
     import Data.Aeson.Key (fromText)
